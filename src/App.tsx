@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useReducer } from 'react';
+import Board from './components/Board';
+import { fillCell, newGame } from './reducer/actions';
+import { gameReducer } from './reducer/gameReducer';
+import { initGame } from './utils';
+
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [state, dispatch] = useReducer(gameReducer, initGame());
+
+  const { board, turn, winner, gameOver, draw } = state;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1 className="title">Connect 4</h1>
+
+      <button
+        type="button"
+        className="button"
+        onClick={() => dispatch(newGame())}
+      >
+        New Game
+      </button>
+
+      <p>{`Turn: ${turn}`}</p>
+
+      <Board
+        board={board}
+        onCellClick={(row: number, column: number) =>
+          dispatch(fillCell({ row, column }))
+        }
+      />
+
+      {gameOver && winner !== null && <p>{`Winner: ${winner}`}</p>}
+
+      {gameOver && draw && <p>Draw</p>}
+    </div>
+  );
 }
 
-export default App
+export default App;
