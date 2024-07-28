@@ -1,4 +1,4 @@
-import { Board, Cell, Colors, GameState, Player, Row } from "../types";
+import { Board, Cell, Colors, GameState, Row } from "../types";
 import { COLUMNS, ROWS } from "./constants";
 
 function createBoard(): Board {
@@ -15,6 +15,7 @@ function createBoard(): Board {
 export function initGame(): GameState {
   return {
     board: createBoard(),
+    moves: [],
     turn: Colors.Red,
     winner: null,
     gameOver: false,
@@ -110,19 +111,6 @@ export function checkWinner(board: Board): boolean {
 
 export function checkDraw(board: Board): boolean {
   return board.every(row => row.every(cell => cell.filled))
-}
-
-export function insertToken(board: Board, column: number, color: Player): Board {
-  const newBoard = structuredClone(board);
-
-  for (let i = newBoard.length - 1; i >= 0; i--) {
-    if (!newBoard[i][column].filled) {
-      newBoard[i][column].color = color;
-      newBoard[i][column].filled = true;
-      break;
-    }
-  }
-  return newBoard;
 }
 
 export function isColumnFull(board: Board, column: number): boolean {

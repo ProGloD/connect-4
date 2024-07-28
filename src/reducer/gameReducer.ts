@@ -1,5 +1,5 @@
-import { Action, ActionTypes, GameState } from "../types";
-import { checkDraw, checkWinner, initGame, insertToken, PLAYER_1, PLAYER_2 } from "../utils";
+import { Action, ActionTypes, Colors, GameState } from "../types";
+import { checkDraw, checkWinner, initGame, PLAYER_1, PLAYER_2 } from "../utils";
 
 export function initializer(): GameState {
   const gameState = localStorage.getItem('gameState');
@@ -19,7 +19,18 @@ export function gameReducer(state: GameState, action: Action): GameState {
     case ActionTypes.INSERT_TOKEN: {
       const newState = structuredClone(state);
 
-      newState.board = insertToken(newState.board, action.column, state.turn);
+      for (let i = newState.board.length - 1; i >= 0; i--) {
+        const cell = newState.board[i][action.column];
+
+        if (!cell.filled) {
+          cell.color = state.turn;
+          cell.filled = true;
+
+          newState.moves.push({ row: i, column: action.column, player: state.turn });
+
+          break;
+        }
+      }
 
       if (checkWinner(newState.board)) {
         newState.winner = state.turn;
@@ -35,7 +46,21 @@ export function gameReducer(state: GameState, action: Action): GameState {
       return newState;
     }
 
+    case ActionTypes.UNDO: {
+      const newState = structuredClone(state);
+      const lastMove = newState.moves.pop();
+
+      if (lastMove) {
+        const cell = newState.board[lastMove.row][lastMove.column];
+        cell.color = Colors.White
+        cell.filled = false
+        newState.turn = lastMove.player;
+      }
+
+      return newState;
+    }
+
     default:
-      throw Error('Unknown action.');
+      throw new Error('Unknown action.');
   }
 }

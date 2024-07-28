@@ -1,4 +1,4 @@
-import { ActionInsertToken, ActionNewGame, ActionTypes } from "../types";
+import { ActionInsertToken, ActionNewGame, ActionTypes, ActionUndo } from "../types";
 
 export function newGame(): ActionNewGame {
   return {
@@ -10,5 +10,11 @@ export function insertToken(column: number): ActionInsertToken {
   return {
     type: ActionTypes.INSERT_TOKEN,
     column
+  }
+}
+
+export function undo(): ActionUndo {
+  return {
+    type: ActionTypes.UNDO
   }
 }

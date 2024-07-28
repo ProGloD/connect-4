@@ -1,13 +1,13 @@
 import { CSSProperties, useContext } from 'react';
 import { GameContext } from '../../provider/GameProvider';
-import { insertToken } from '../../reducer/actions';
+import { insertToken, undo } from '../../reducer/actions';
 import { isColumnFull } from '../../utils';
 
 import './index.css';
 
 const Board = () => {
   const {
-    state: { board },
+    state: { board, moves, gameOver },
     dispatch,
   } = useContext(GameContext);
 
@@ -50,6 +50,14 @@ const Board = () => {
           ))
         )}
       </div>
+
+      <button
+        type="button"
+        onClick={() => dispatch(undo())}
+        disabled={moves.length === 0 || gameOver}
+      >
+        Undo
+      </button>
     </div>
   );
 };

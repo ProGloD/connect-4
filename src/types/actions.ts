@@ -1,6 +1,7 @@
 export enum ActionTypes {
   NEW_GAME = 'NEW_GAME',
   INSERT_TOKEN = 'INSERT_TOKEN',
+  UNDO = 'UNDO',
 }
 
 export type ActionNewGame = {
@@ -12,4 +13,8 @@ export type ActionInsertToken = {
   column: number;
 }
 
-export type Action = ActionNewGame | ActionInsertToken;
+export type ActionUndo = {
+  type: ActionTypes.UNDO;
+}
+
+export type Action = ActionNewGame | ActionInsertToken | ActionUndo;
