@@ -29,7 +29,7 @@ function checkLine(a: Colors, b: Colors, c: Colors, d: Colors) {
 }
 
 function vertical(board: Board): boolean {
-  for (let i = board.length - 1; i >= 4; i--) {
+  for (let i = board.length - 1; i >= 3; i--) {
     for (let j = 0; j < board[i].length; j++) {
       if (
         checkLine(
