@@ -1,15 +1,16 @@
-import { CSSProperties } from 'react';
-import { Board as BoardType } from '../../types';
-
-import './index.css';
+import { CSSProperties, useContext } from 'react';
+import { GameContext } from '../../provider/GameProvider';
+import { insertToken } from '../../reducer/actions';
 import { isColumnFull } from '../../utils';
 
-type BoardProps = {
-  board: BoardType;
-  onTokenInsert: (column: number) => void;
-};
+import './index.css';
 
-const Board = ({ board, onTokenInsert }: BoardProps) => {
+const Board = () => {
+  const {
+    state: { board },
+    dispatch,
+  } = useContext(GameContext);
+
   const columns = board[0].length;
   const rows = board.length;
 
@@ -27,7 +28,7 @@ const Board = ({ board, onTokenInsert }: BoardProps) => {
           <button
             className="insert-button"
             key={index}
-            onClick={() => onTokenInsert(index)}
+            onClick={() => dispatch(insertToken(index))}
             disabled={isColumnFull(board, index)}
           >
             Insert

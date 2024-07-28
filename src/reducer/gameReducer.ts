@@ -1,6 +1,16 @@
 import { Action, ActionTypes, GameState } from "../types";
 import { checkDraw, checkWinner, initGame, insertToken, PLAYER_1, PLAYER_2 } from "../utils";
 
+export function initializer(): GameState {
+  const gameState = localStorage.getItem('gameState');
+
+  if (gameState) {
+    return JSON.parse(gameState) as GameState;
+  }
+
+  return initGame();
+}
+
 export function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
     case ActionTypes.NEW_GAME:

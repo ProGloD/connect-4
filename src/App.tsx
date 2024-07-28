@@ -1,15 +1,14 @@
-import { useReducer } from 'react';
+import { useContext } from 'react';
 import Board from './components/Board';
-import { insertToken, newGame } from './reducer/actions';
-import { gameReducer } from './reducer/gameReducer';
-import { initGame } from './utils';
+import { GameContext } from './provider/GameProvider';
+import { newGame } from './reducer/actions';
 
 import './App.css';
 
 function App() {
-  const [state, dispatch] = useReducer(gameReducer, initGame());
+  const { state, dispatch } = useContext(GameContext);
 
-  const { board, turn, winner, gameOver, draw } = state;
+  const { turn, winner, gameOver, draw } = state;
 
   return (
     <div className="App">
@@ -25,10 +24,7 @@ function App() {
 
       <p>{`Turn: ${turn}`}</p>
 
-      <Board
-        board={board}
-        onTokenInsert={(column: number) => dispatch(insertToken(column))}
-      />
+      <Board />
 
       {gameOver && winner !== null && <p>{`Winner: ${winner}`}</p>}
 
