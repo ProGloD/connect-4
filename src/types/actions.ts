@@ -1,20 +1,15 @@
 export enum ActionTypes {
   NEW_GAME = 'NEW_GAME',
-  PLACE_TOKEN = 'PLACE_TOKEN',
+  INSERT_TOKEN = 'INSERT_TOKEN',
 }
 
 export type ActionNewGame = {
   type: ActionTypes.NEW_GAME;
 }
 
-export type PlaceTokenPayload = {
-  row: number
-  column: number
+export type ActionInsertToken = {
+  type: ActionTypes.INSERT_TOKEN;
+  column: number;
 }
 
-export type ActionPlaceToken = {
-  type: ActionTypes.PLACE_TOKEN;
-  payload: PlaceTokenPayload;
-}
-
-export type Action = ActionNewGame | ActionPlaceToken;
+export type Action = ActionNewGame | ActionInsertToken;

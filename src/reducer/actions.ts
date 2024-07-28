@@ -1,4 +1,4 @@
-import { ActionPlaceToken, PlaceTokenPayload, ActionNewGame, ActionTypes } from "../types";
+import { ActionInsertToken, ActionNewGame, ActionTypes } from "../types";
 
 export function newGame(): ActionNewGame {
   return {
@@ -6,9 +6,9 @@ export function newGame(): ActionNewGame {
   }
 }
 
-export function fillCell(payload: PlaceTokenPayload): ActionPlaceToken {
+export function insertToken(column: number): ActionInsertToken {
   return {
-    type: ActionTypes.PLACE_TOKEN,
-    payload
+    type: ActionTypes.INSERT_TOKEN,
+    column
   }
 }

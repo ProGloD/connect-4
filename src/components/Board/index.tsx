@@ -2,36 +2,53 @@ import { CSSProperties } from 'react';
 import { Board as BoardType } from '../../types';
 
 import './index.css';
+import { isColumnFull } from '../../utils';
 
 type BoardProps = {
   board: BoardType;
-  onCellClick: (row: number, column: number) => void;
+  onTokenInsert: (column: number) => void;
 };
 
-const Board = ({ board, onCellClick }: BoardProps) => {
+const Board = ({ board, onTokenInsert }: BoardProps) => {
+  const columns = board[0].length;
+  const rows = board.length;
+
   return (
     <div
       style={
         {
-          '--columns': board[0].length,
-          '--rows': board.length,
+          '--columns': columns,
+          '--rows': rows,
         } as CSSProperties
       }
-      className="board"
     >
-      {board.map((row, rowIndex) =>
-        row.map((cell, columnIndex) => (
-          <div key={columnIndex} className="cell-container">
-            <div
-              style={{
-                backgroundColor: cell.color,
-              }}
-              className="cell"
-              onClick={() => onCellClick(rowIndex, columnIndex)}
-            />
-          </div>
-        ))
-      )}
+      <div className="insert-buttons-container">
+        {Array.from({ length: columns }, (_, index) => (
+          <button
+            className="insert-button"
+            key={index}
+            onClick={() => onTokenInsert(index)}
+            disabled={isColumnFull(board, index)}
+          >
+            Insert
+          </button>
+        ))}
+      </div>
+
+      <div className="board">
+        {board.map((row, rowIndex) =>
+          row.map((cell, columnIndex) => (
+            <div key={`${rowIndex}${columnIndex}`} className="cell-container">
+              <div
+                style={{
+                  backgroundColor: cell.color,
+                }}
+                className="cell"
+              />
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

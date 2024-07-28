@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import Board from './components/Board';
-import { fillCell, newGame } from './reducer/actions';
+import { insertToken, newGame } from './reducer/actions';
 import { gameReducer } from './reducer/gameReducer';
 import { initGame } from './utils';
 
@@ -27,9 +27,7 @@ function App() {
 
       <Board
         board={board}
-        onCellClick={(row: number, column: number) =>
-          dispatch(fillCell({ row, column }))
-        }
+        onTokenInsert={(column: number) => dispatch(insertToken(column))}
       />
 
       {gameOver && winner !== null && <p>{`Winner: ${winner}`}</p>}

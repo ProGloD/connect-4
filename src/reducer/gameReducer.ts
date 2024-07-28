@@ -1,20 +1,15 @@
 import { Action, ActionTypes, GameState } from "../types";
-import { checkDraw, checkWinner, initGame, PLAYER_1, PLAYER_2 } from "../utils";
+import { checkDraw, checkWinner, initGame, insertToken, PLAYER_1, PLAYER_2 } from "../utils";
 
 export function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
     case ActionTypes.NEW_GAME:
       return initGame();
 
-    case ActionTypes.PLACE_TOKEN: {
+    case ActionTypes.INSERT_TOKEN: {
       const newState = structuredClone(state);
-      const { row, column } = action.payload;
-      const cell = newState.board[row][column];
 
-      if (!cell.filled) {
-        cell.color = state.turn;
-        cell.filled = true;
-      }
+      newState.board = insertToken(newState.board, action.column, state.turn);
 
       if (checkWinner(newState.board)) {
         newState.winner = state.turn;
